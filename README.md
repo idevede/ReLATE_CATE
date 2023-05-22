@@ -5,7 +5,7 @@ This is the code of paper "Representation Learning for Treatment Effects Estimat
 
 ## Code Transparency 
 
-1. The code in the `SpeedData_Exp` folder is used to reproduce Experiment 5.2 and Appendix E.2 in our paper. This includes:
+1. The code in the `SpeedData_Exp` folder is used to reproduce Experiment 5.2 and Appendix F.2 in our paper. This includes:
     - The Mod 1 dataset used in the experiments
     - The proposed model architectures and hyperparameters
     - The full training and evaluation scripts 
@@ -16,7 +16,7 @@ To run this code:
 bash run_relate.sh
 ```
 
-2. The Jupyter notebook file in the `Covid_Exp_Appendix` folder contains the code to reproduce the Covid-related experiments discussed in Appendix C. This includes:
+2. The Jupyter notebook file in the `Covid_Exp_Appendix` folder contains the code to reproduce the Covid-related experiments discussed in Appendix D. This includes:
     - Data processing steps
     - Model implementations
     - Full results and analyses
