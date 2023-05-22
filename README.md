@@ -6,6 +6,7 @@ This is the code of paper "Representation Learning for Treatment Effects Estimat
 ## Code Transparency 
 
 1. The code in the `SpeedData_Exp` folder is used to reproduce Experiment 5.2 and Appendix E.2 in our paper. This includes:
+    - The Mod 1 dataset used in the experiments
     - The proposed model architectures and hyperparameters
     - The full training and evaluation scripts 
     - Outputs collection from multiple runs to demonstrate reproducibility  
