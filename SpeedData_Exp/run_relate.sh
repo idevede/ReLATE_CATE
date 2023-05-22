@@ -32,7 +32,7 @@ for i in {1..10}; do
              
             
             #echo "xoxn:"
-            python -u main_xoxn.py \
+            python -u ReLATE_model.py \
               --hidden_dim=$HIDDEN_DIM \
               --l2_regularizer_weight=$L2 \
               --lr=$LR\
