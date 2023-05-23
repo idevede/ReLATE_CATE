@@ -1,0 +1,2 @@
+# Covid dataset: https://github.com/zidatalab/causalcovid19
+# Air pollution dataset:  https://archive.ics.uci.edu/ml/datasets/PM2.5+Data+of+Five+Chinese+Cities
