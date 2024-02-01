@@ -212,7 +212,7 @@ envs = [
 ]
 
 
-# # Define and instantiate the model
+#  # Define and instantiate the model
  # # Define and instantiate the model
 class MLP(nn.Module):
     def __init__(self, dim):
@@ -272,17 +272,19 @@ class MLP(nn.Module):
     def forward(self, input):
         initial = input.view(input.shape)
 
+        if flags.net != 'tarnet':
+            ho_kl_d = F.relu(self.lin_o(initial)) # xo
+            ht_kl_d = F.relu(self.lin_t(initial)) # xo
+            hn_kl_d = F.relu(self.lin_n(initial)) # xn
         x = F.relu(self.lin1(initial))
         x = F.relu(self.lin1_1(x))
         x = F.relu(self.lin1_2(x))
         x = F.relu(x)
-        if flags.net == 'tarnet':
-            t = self.lin1_3(initial)
-        else:
-            t = self.lin1_3(x)
+        
 
         hn_kl = F.relu(self.lin_n(x)) # xn
         ho_kl = F.relu(self.lin_o(x)) # xo
+        ht_kl = F.relu(self.lin_t(x))
 
         loss = torch.tensor(0.)
         if flags.reg == 'mine':
@@ -302,13 +304,34 @@ class MLP(nn.Module):
             pred_xy = logits[:batch_size]
             pred_x_y = logits[batch_size:]
             loss = np.log2(np.exp(1)) * torch.abs((torch.log(torch.mean(torch.exp(pred_x_y)))-torch.mean(pred_xy)))
+            # x_n, x_t
+
+            batch_size = hn_kl.size(0)
+            tiled_x = torch.cat([hn_kl, hn_kl, ], dim=0)
+            idx = torch.randperm(batch_size)
+            # import ipdb; ipdb.set_trace()
+            shuffled_y = ht_kl[idx]
+            concat_y = torch.cat([ht_kl, shuffled_y], dim=0)
+            inputs = torch.cat([tiled_x, concat_y], dim=1)
+            logits = F.relu(self.lin_mi_t_0(inputs))
+            # logits = F.relu(self.lin_mi_1(logits))
+            logits = self.lin_mi_t_1(logits)
+
+            pred_xy = logits[:batch_size]
+            pred_x_y = logits[batch_size:]
+            loss += np.log2(np.exp(1)) * torch.abs((torch.log(torch.mean(torch.exp(pred_x_y))) - torch.mean(pred_xy)))
+    
+            #loss = -loss
             # # compute loss, you'd better scale exp to bit
             # ######Done MINE
         elif flags.reg == 'wasserstein':
             ###wasserstein
             loss, Mlam = -1 * wasserstein(hn_kl, ho_kl, cuda = False)
             ###
-
+        if flags.net == 'tarnet':
+            t = self.lin1_3(hn_kl + ht_kl)
+        else:
+            t = self.lin1_3(hn_kl_d + ht_kl_d)
 
         # h1, h2 - different group
         # xn h1_kl
@@ -353,7 +376,6 @@ class MLP(nn.Module):
         return torch.cat((h0_f, h1_f, t), 1), h0_p_a, h1_p_a, loss #, h0, h1
         #return torch.cat((h0+h0_n, h1+h1_n, t), 1), h0_p_n+h0_p, h1_p_n+h1_p, loss
         #return torch.cat((h0+h0_n, h1+h1_n, t), 1), h0_p_n, h1_p_n, loss, h0, h1
-
 
 mlp = MLP(X.shape[1])
 if flags.gpu==1:
