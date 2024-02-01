@@ -1,6 +1,6 @@
 # ReLATE_CATE
 
-This is the code of paper "Representation Learning for Treatment Effects Estimation in Heterogeneous Environments". In the spirit of open research and transparency, we are committed to releasing all of our code, including the model architectures and hyperparameters, training scripts, evaluation metrics, and baseline implementations upon acceptance of our paper.
+This is the code of paper "Learning Minimal Sufficient Representations from Mixed Covariates for Treatment Effect Estimation". In the spirit of open research and transparency, we are committed to releasing all of our code, including the model architectures and hyperparameters, training scripts, evaluation metrics, and baseline implementations upon acceptance of our paper.
 
 
 ## Code Transparency 
@@ -18,5 +18,5 @@ bash run_relate.sh
 
 2. The Jupyter notebook file in the `Covid_Exp_Appendix` folder contains the code to reproduce the Covid-related experiments discussed in Appendix D. This includes:
     - Data processing steps
-    - Model implementations
+    - example of Model implementations
     - Full results and analyses
